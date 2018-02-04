@@ -83,12 +83,6 @@ class DawnBot(commands.Bot):
             left = ' '.join(fmt)
             await ctx.send(f'You are on cooldown. Try again in {left}.', delete_after=10)
             await ctx.message.delete()
-        elif isinstance(error, errors.WrongChannel):
-            if error.channel is not None:
-                msg = f":x: **You can't do that here.**\nPlease do this in {error.channel.mention}"
-            else:
-                msg = "You can't use that command in this server."
-            await ctx.send(msg, delete_after=10)
         elif isinstance(error, commands.CommandNotFound):
             pass
         else:
@@ -105,7 +99,7 @@ initial_extensions = [f'cogs.{ext}' for ext in
                       ('help', 'utility', 'private',)]
 
 description = 'Splitter Bot - Created by MadWookie & Langinator3.'
-bot = DawnBot(command_prefix=['!'], description=description, formatter=formatter, request_offline_members=True)
+bot = DawnBot(command_prefix=['.'], description=description, formatter=formatter, request_offline_members=True)
 bot.ready = False
 bot.db_pool = bot.loop.run_until_complete(asyncpg.create_pool(config.dsn, init=set_codecs))
 
