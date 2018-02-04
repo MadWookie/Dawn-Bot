@@ -43,7 +43,11 @@ class Private:
                 return
             creating.append(channel_number)
             await ctx.author.send('Please enter the password you\'d like to use for {}'.format(channel))
-            m = await self.bot.wait_for('message', check=lambda m: m.channel.id == ctx.author.dm_channel.id and m.author == ctx.author, timeout=60)
+            try:
+                m = await self.bot.wait_for('message', check=lambda m: m.channel.id == ctx.author.dm_channel.id and m.author == ctx.author, timeout=60)
+            except asyncio.TimeoutError:
+                await ctx.author.send('You took too long to respond.')
+                return
             password = m.content
             async with ctx.con.transaction():
                 await ctx.con.execute('''
@@ -67,7 +71,11 @@ class Private:
             await ctx.send('Sorry, that channel isn\'t being used.\nIf you\'d like to start a new chat in that channel please use `!private new`.\nOtherwise please select a different channel.')
         else:
             await ctx.author.send('Please enter the password for {}'.format(channel))
-            m = await self.bot.wait_for('message', check=lambda m: m.channel.id == ctx.author.dm_channel.id and m.author == ctx.author, timeout=60)
+            try:
+                m = await self.bot.wait_for('message', check=lambda m: m.channel.id == ctx.author.dm_channel.id and m.author == ctx.author, timeout=60)
+            except asyncio.TimeoutError:
+                await ctx.author.send('You took too long to respond.')
+                return
             password = m.content
             correct_password = await ctx.con.fetchval('''
                 SELECT password FROM privatechannels WHERE guild_id = $1 AND channel_num = $2
@@ -90,7 +98,11 @@ class Private:
             await ctx.send('That channel does not exist or you did not start it.')
         else:
             await ctx.author.send('Please enter the password for {}'.format(channel))
-            m = await self.bot.wait_for('message', check=lambda m: m.channel.id == ctx.author.dm_channel.id and m.author == ctx.author, timeout=60)
+            try:
+                m = await self.bot.wait_for('message', check=lambda m: m.channel.id == ctx.author.dm_channel.id and m.author == ctx.author, timeout=60)
+            except asyncio.TimeoutError:
+                await ctx.author.send('You took too long to respond.')
+                return
             password = m.content
             async with ctx.con.transaction():
                 await ctx.con.execute('''
