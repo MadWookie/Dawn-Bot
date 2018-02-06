@@ -10,7 +10,7 @@ from utils import errors, checks
 def in_voice(ctx):
     if ctx.author.voice is not None:
         return True
-    raise errors.NotConnected(ctx.message)
+    raise errors.NotConnected('You must be in a voice channel to use this command.')
 
 
 class Private:

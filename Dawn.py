@@ -84,7 +84,7 @@ class DawnBot(commands.Bot):
             await ctx.send(f'You are on cooldown. Try again in {left}.', delete_after=10)
             await ctx.message.delete()
         elif isinstance(error, errors.NotConnected):
-            await ctx.send('You must be in a voice channel to use this command.')
+            await ctx.send(error)
         elif isinstance(error, commands.CommandNotFound):
             pass
         else:
