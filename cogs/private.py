@@ -35,7 +35,7 @@ class Private:
         if channel is None:
             await ctx.send('That private channel does not exist, please choose a different one.')
         elif channel.members:
-            await ctx.send('Sorry, that channel is already being used.\nIf you\'d like to join that channel please use `!private join`.\nOtherwise please select a different channel.')
+            await ctx.send('Sorry, that channel is already being used.\nIf you\'d like to join that channel please use `.private join <channel number>`.\nOtherwise please select a different channel.')
         else:
             creating = self.creating[ctx.guild.id] = self.creating.get(ctx.guild.id, [])
             if channel_number in creating:
@@ -68,7 +68,7 @@ class Private:
         if channel is None:
             await ctx.send('That private channel does not exist, please choose a different one.')
         elif not channel.members:
-            await ctx.send('Sorry, that channel isn\'t being used.\nIf you\'d like to start a new chat in that channel please use `!private new`.\nOtherwise please select a different channel.')
+            await ctx.send('Sorry, that channel isn\'t being used.\nIf you\'d like to start a new chat in that channel please use `.private new <channel number>`.\nOtherwise please select a different channel.')
         else:
             await ctx.author.send('Please enter the password for {}'.format(channel))
             try:
