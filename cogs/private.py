@@ -33,13 +33,13 @@ class Private:
         """Starts a new private channel."""
         channel = discord.utils.get(ctx.guild.voice_channels, name='Private Channel {}'.format(channel_number))
         if channel is None:
-            await ctx.send('That private channel does not exist, please choose a different one.')
+            await ctx.send('That private channel does not exist, please choose a different one.', delete_after=30)
         elif channel.members:
-            await ctx.send('Sorry, that channel is already being used.\nIf you\'d like to join that channel please use `.private join <channel number>`.\nOtherwise please select a different channel.')
+            await ctx.send('Sorry, that channel is already being used.\nIf you\'d like to join that channel please use `.private join <channel number>`.\nOtherwise please select a different channel.', delete_after=30)
         else:
             creating = self.creating[ctx.guild.id] = self.creating.get(ctx.guild.id, [])
             if channel_number in creating:
-                await ctx.send('Sorry, that channel is already being used. Please choose a different one.')
+                await ctx.send('Sorry, that channel is already being used. Please choose a different one.', delete_after=30)
                 return
             creating.append(channel_number)
             await ctx.author.send('Please enter the password you\'d like to use for {}'.format(channel))
@@ -66,9 +66,9 @@ class Private:
         """Joins an already existing private channel."""
         channel = discord.utils.get(ctx.guild.voice_channels, name='Private Channel {}'.format(channel_number))
         if channel is None:
-            await ctx.send('That private channel does not exist, please choose a different one.')
+            await ctx.send('That private channel does not exist, please choose a different one.', delete_after=30)
         elif not channel.members:
-            await ctx.send('Sorry, that channel isn\'t being used.\nIf you\'d like to start a new chat in that channel please use `.private new <channel number>`.\nOtherwise please select a different channel.')
+            await ctx.send('Sorry, that channel isn\'t being used.\nIf you\'d like to start a new chat in that channel please use `.private new <channel number>`.\nOtherwise please select a different channel.', delete_after=30)
         else:
             await ctx.author.send('Please enter the password for {}'.format(channel))
             try:
@@ -95,7 +95,7 @@ class Private:
             SELECT EXISTS(SELECT * FROM privatechannels WHERE guild_id = $1 AND channel_num = $2 AND owner_id = $3)
             ''', ctx.guild.id, channel_number, ctx.author.id)
         if not exists:
-            await ctx.send('That channel does not exist or you did not start it.')
+            await ctx.send('That channel does not exist or you did not start it.', delete_after=30)
         else:
             await ctx.author.send('Please enter the password for {}'.format(channel))
             try:
@@ -108,7 +108,7 @@ class Private:
                 await ctx.con.execute('''
                     UPDATE privatechannels SET password = $3 WHERE guild_id = $1 AND channel_num = $2
                     ''', ctx.guild.id, channel_number, password)
-            await ctx.send('The password for {} has been updated.'.format(channel))
+            await ctx.send('The password for {} has been updated.'.format(channel), delete_after=30)
 
 
 def setup(bot):
