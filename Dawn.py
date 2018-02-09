@@ -84,7 +84,8 @@ class DawnBot(commands.Bot):
             await ctx.send(f'You are on cooldown. Try again in {left}.', delete_after=10)
             await ctx.message.delete()
         elif isinstance(error, errors.NotConnected):
-            await ctx.send(error)
+            await ctx.send(error, delete_after=30)
+            await ctx.message.delete()
         elif isinstance(error, commands.CommandNotFound):
             pass
         else:
@@ -100,7 +101,7 @@ formatter = commands.HelpFormatter(show_check_failure=True)
 initial_extensions = [f'cogs.{ext}' for ext in
                       ('help', 'utility', 'private',)]
 
-description = 'Splitter Bot - Created by MadWookie & Langinator3.'
+description = 'Dawn Bot - Created by MadWookie & Langinator3.'
 bot = DawnBot(command_prefix=['.'], description=description, formatter=formatter, request_offline_members=True)
 bot.ready = False
 bot.db_pool = bot.loop.run_until_complete(asyncpg.create_pool(config.dsn, init=set_codecs))

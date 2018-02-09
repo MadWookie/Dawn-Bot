@@ -108,7 +108,7 @@ class Private:
                 await ctx.con.execute('''
                     UPDATE privatechannels SET password = $3 WHERE guild_id = $1 AND channel_num = $2
                     ''', ctx.guild.id, channel_number, password)
-            await ctx.send('The password for {} has been updated.'.format(channel), delete_after=30)
+            await ctx.author.send('The password for {} has been updated.'.format(channel))
 
 
 def setup(bot):
